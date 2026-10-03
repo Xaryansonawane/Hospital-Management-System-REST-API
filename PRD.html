@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Product Requirements Document (PRD) - Hospital Management System REST API</title>
+<style>
+    @page {
+        size: A4;
+        margin: 18mm 15mm 18mm 15mm;
+        @bottom-right {
+            content: "Page " counter(page);
+            font-size: 8.5pt;
+            color: #64748b;
+        }
+        @bottom-left {
+            content: "Hospital Management System REST API - PRD";
+            font-size: 8.5pt;
+            color: #94a3b8;
+        }
+    }
+    * {
+        box-sizing: border-box;
+    }
+    body {
+        font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+        color: #1e293b;
+        line-height: 1.55;
+        font-size: 9.5pt;
+        background-color: #ffffff;
+        margin: 0;
+        padding: 0;
+    }
+    .cover-page {
+        page-break-after: always;
+        height: 88vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 40px 20px;
+    }
+    .cover-badge {
+        display: inline-block;
+        background: #e0f2fe;
+        color: #0369a1;
+        font-size: 11pt;
+        font-weight: 700;
+        padding: 6px 18px;
+        border-radius: 20px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 24px;
+        border: 1px solid #bae6fd;
+    }
+    .cover-title {
+        font-size: 30pt;
+        font-weight: 800;
+        color: #0f172a;
+        margin: 0 0 16px 0;
+        line-height: 1.2;
+    }
+    .cover-subtitle {
+        font-size: 14pt;
+        color: #475569;
+        margin: 0 0 36px 0;
+        max-width: 650px;
+    }
+    .cover-divider {
+        width: 80px;
+        height: 4px;
+        background: #0284c7;
+        margin: 0 auto 36px auto;
+        border-radius: 2px;
+    }
+    .cover-meta {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+        max-width: 600px;
+        width: 100%;
+        text-align: left;
+        margin-top: 30px;
+        background: #f8fafc;
+        padding: 24px;
+        border-radius: 12px;
+        border: 1px solid #e2e8f0;
+    }
+    .meta-item {
+        font-size: 9pt;
+    }
+    .meta-label {
+        font-weight: 700;
+        color: #64748b;
+        text-transform: uppercase;
+        font-size: 7.5pt;
+        margin-bottom: 4px;
+    }
+    .meta-value {
+        color: #0f172a;
+        font-weight: 600;
+    }
+    
+    h1, h2, h3, h4 {
+        color: #0f172a;
+        font-weight: 700;
+        page-break-after: avoid;
+    }
+    h1 {
+        font-size: 16pt;
+        border-bottom: 2px solid #0284c7;
+        padding-bottom: 8px;
+        margin-top: 30px;
+        margin-bottom: 14px;
+        page-break-before: auto;
+    }
+    h2 {
+        font-size: 12pt;
+        color: #0369a1;
+        margin-top: 22px;
+        margin-bottom: 10px;
+        border-left: 4px solid #0284c7;
+        padding-left: 10px;
+    }
+    h3 {
+        font-size: 10.5pt;
+        margin-top: 16px;
+        margin-bottom: 8px;
+    }
+    p {
+        margin: 0 0 10px 0;
+    }
+    .divider {
+        border: 0;
+        height: 1px;
+        background: #e2e8f0;
+        margin: 24px 0;
+    }
+    
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 12px 0 16px 0;
+        font-size: 8.5pt;
+        page-break-inside: avoid;
+    }
+    th, td {
+        padding: 7px 10px;
+        text-align: left;
+        border: 1px solid #cbd5e1;
+        vertical-align: top;
+    }
+    th {
+        background-color: #f1f5f9;
+        font-weight: 700;
+        color: #334155;
+    }
+    tr:nth-child(even) td {
+        background-color: #f8fafc;
+    }
+    
+    .badge {
+        display: inline-block;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 7.5pt;
+        font-weight: 700;
+        font-family: 'Consolas', monospace;
+        text-transform: uppercase;
+    }
+    .badge-get { background: #dbeafe; color: #1d4ed8; }
+    .badge-post { background: #dcfce7; color: #15803d; }
+    .badge-put { background: #fef3c7; color: #b45309; }
+    .badge-delete { background: #fee2e2; color: #b91c1c; }
+    
+    .role-badge {
+        display: inline-block;
+        padding: 1px 6px;
+        border-radius: 3px;
+        font-size: 7pt;
+        font-weight: 700;
+    }
+    .role-admin { background: #fee2e2; color: #991b1b; }
+    .role-doctor { background: #e0e7ff; color: #3730a3; }
+    .role-patient { background: #dcfce7; color: #166534; }
+
+    code {
+        font-family: 'Consolas', 'Courier New', monospace;
+        background: #f1f5f9;
+        color: #0f172a;
+        padding: 2px 5px;
+        border-radius: 4px;
+        font-size: 8pt;
+    }
+    pre {
+        background: #0f172a;
+        color: #f8fafc;
+        padding: 10px 12px;
+        border-radius: 6px;
+        font-family: 'Consolas', 'Courier New', monospace;
+        font-size: 7.5pt;
+        line-height: 1.4;
+        overflow-x: auto;
+        margin: 8px 0 12px 0;
+        page-break-inside: avoid;
+    }
+    pre code {
+        background: transparent;
+        color: inherit;
+        padding: 0;
+    }
+    
+    .alert {
+        border-left: 4px solid #0284c7;
+        background: #f0f9ff;
+        padding: 10px 14px;
+        border-radius: 0 6px 6px 0;
+        margin: 10px 0;
+        font-size: 8.5pt;
+        page-break-inside: avoid;
+    }
+    ul, ol {
+        margin: 6px 0 12px 20px;
+        padding: 0;
+    }
+    li {
+        margin-bottom: 4px;
+    }
+</style>
+</head>
+<body>
+
+<!-- COVER PAGE -->
+<div class="cover-page">
+    <div class="cover-badge">Product Requirements Document (PRD)</div>
+    <div class="cover-title">Hospital Management System REST API</div>
+    <div class="cover-subtitle">Technical Specification, Domain Invariants & Implementation Guidelines for Engineering Teams</div>
+    <div class="cover-divider"></div>
+    
+    <div class="cover-meta">
+        <div class="meta-item">
+            <div class="meta-label">Architecture Style</div>
+            <div class="meta-value">Backend-Only REST API (Headless)</div>
+        </div>
+        <div class="meta-item">
+            <div class="meta-label">Runtime / Framework</div>
+            <div class="meta-value">Java 17 LTS / Spring Boot 3.3.4</div>
+        </div>
+        <div class="meta-item">
+            <div class="meta-label">Server Port & Base URL</div>
+            <div class="meta-value">8085 (http://localhost:8085/)</div>
+        </div>
+        <div class="meta-item">
+            <div class="meta-label">Security & Authentication</div>
+            <div class="meta-value">Stateless JWT / Bearer Token</div>
+        </div>
+        <div class="meta-item">
+            <div class="meta-label">Primary Database</div>
+            <div class="meta-value">MySQL 8.x (H2 In-Memory Fallback)</div>
+        </div>
+        <div class="meta-item">
+            <div class="meta-label">Interactive Documentation</div>
+            <div class="meta-value">Swagger UI (/swagger-ui/index.html)</div>
+        </div>
+    </div>
+</div>
+
+<h1>Product Requirements Document (PRD)</h1>
+<h2>Hospital Management System REST API</h2>
+
+<hr class="divider" />
+
+<h2>1. Project Overview</h2>
+
+<p>The <strong>Hospital Management System (HMS) REST API</strong> is an enterprise-grade, backend-only healthcare information management platform built on <strong>Java 17, Spring Boot 3.3.4, Spring Data JPA, Hibernate, Spring Security, JWT, and MySQL/H2</strong>.</p>
+
+<p>The system provides a unified, headless service architecture that coordinates clinical encounters, patient records, provider schedules, pharmacy logistics, inpatient ward and bed occupancy, diagnostic orders, itemized billing, and executive operational analytics. All user interactions are mediated strictly via RESTful HTTP interfaces authenticated with JSON Web Tokens (JWT), with interactive exploration and developer testing enabled via <strong>Springdoc OpenAPI (Swagger UI)</strong> at <code>http://localhost:8085/swagger-ui/index.html</code>.</p>
+
+<p>The primary goal of this platform is to establish transactional consistency, eliminate double-booking and stock overselling anomalies, enforce clinical triage prioritization, and provide an extensible API foundation for external web portals, mobile apps, and hospital IoT integrations.</p>
+
+<hr class="divider" />
+
+<h2>2. Feature List</h2>
+
+<ol>
+<li><strong>Authentication & Identity Access Management (IAM)</strong>: Provides secure stateless JWT registration, login, token parsing, and role-based authorization for administrators, doctors, and patients.</li>
+<li><strong>Patient Demographic & Medical Record Management</strong>: Stores comprehensive patient profiles and aggregates a unified historical timeline of all clinical encounters, vitals, prescriptions, admissions, and bills.</li>
+<li><strong>Doctor & Clinical Staff Directory</strong>: Manages doctor credentials, departmental affiliations, medical license verification, consultation fees, and real-time availability states.</li>
+<li><strong>Hospital Department Structure</strong>: Organizes clinical specialties, administrative units, and departmental service routing.</li>
+<li><strong>Walk-In Outpatient Queue Management</strong>: Handles unscheduled patient arrivals with atomic, daily-sequenced tokens (<code>W-001</code>, <code>W-002</code>, ...) and active queue transitions.</li>
+<li><strong>Emergency Bay Clinical Triage</strong>: Prioritizes urgent trauma admissions based on physiological acuity levels (<code>CRITICAL</code> > <code>HIGH</code> > <code>MEDIUM</code> > <code>LOW</code>) ensuring immediate clinical intervention.</li>
+<li><strong>Doctor Appointment Scheduling</strong>: Coordinates bookable consultation slots while enforcing an invariant that prevents doctor schedule overlapping and double-booking collisions.</li>
+<li><strong>Clinical Consultation & Diagnostics</strong>: Records patient symptoms, doctor diagnoses, physiological vital signs, and follow-up consultation dates.</li>
+<li><strong>Digital Prescription Issuance</strong>: Allows physicians to issue itemized medication orders linked directly to consultations with explicit dosages, frequencies, and durations.</li>
+<li><strong>Pharmacy Inventory Control</strong>: Tracks medicine batches, supplier invoices, minimum stock reorder thresholds, and shelf expiration dates.</li>
+<li><strong>Point-of-Sale (POS) Pharmacy Dispensing</strong>: Dispenses prescription and over-the-counter medications with atomic stock deduction, expired drug rejection, and financial total calculation.</li>
+<li><strong>Inpatient Ward & Bed Lifecycle Management</strong>: Allocates available hospital beds across specialized wards (General, ICU, Emergency, Private) with automatic status locking on admission and release on discharge.</li>
+<li><strong>Inpatient Admission & Discharge (ADT)</strong>: Manages inpatient hospital stays from admission diagnosis to clinical discharge summaries.</li>
+<li><strong>Itemized Billing & Payment Processing</strong>: Aggregates consultation fees, room/bed tariffs, medication charges, and diagnostic fees into a unified invoice with multi-method payment settlement.</li>
+<li><strong>Departmental Inquiries & Patient Messaging</strong>: Routes patient inquiries and feedback to specific hospital departments with read-state tracking.</li>
+<li><strong>Executive Dashboard & Analytical Reporting</strong>: Delivers real-time operational KPI summaries (bed occupancy, patient influx, revenue summaries, and low-stock alerts).</li>
+</ol>
+
+<hr class="divider" />
+
+<h2>3. Functional Requirements</h2>
+
+<h3>3.1 Authentication & User Management</h3>
+<ul>
+<li><strong>User Registration</strong>:</li>
+<li>Accepts <code>firstName</code>, <code>lastName</code>, <code>email</code>, <code>password</code>, <code>phone</code>, <code>dateOfBirth</code>, <code>gender</code>, and optional clinical fields (<code>bloodGroup</code>, <code>emergencyContact</code>).</li>
+<li>Passwords must be encoded using BCrypt (<code>BCryptPasswordEncoder</code>).</li>
+<li>Rejects registrations if the email address already exists (<code>DuplicateResourceException</code>).</li>
+<li><strong>User Login</strong>:</li>
+<li>Validates credentials against stored BCrypt hashes.</li>
+<li>On success, issues a signed HMAC-SHA256 JWT containing <code>sub</code> (email), <code>userId</code>, and <code>role</code> claims, valid for 24 hours (configurable via <code>JWT_EXPIRATION_MS</code>).</li>
+<li><strong>Authorization Roles</strong>:</li>
+<li><span class="role-badge role-admin">ADMIN</span>: Unrestricted access across all domains, inventory purchases, doctor registrations, and reports.</li>
+<li><span class="role-badge role-doctor">DOCTOR</span>: Clinical access (consultations, prescriptions, triage, admissions, appointments).</li>
+<li><span class="role-badge role-patient">PATIENT</span>: Self-service access (own appointments, own medical history, own prescriptions/invoices, messaging).</li>
+</ul>
+
+<h3>3.2 Walk-In Outpatient Queue Flow</h3>
+<ul>
+<li><strong>Token Generation</strong>:</li>
+<li>Daily tokens must be generated sequentially in format <code>W-001</code>, <code>W-002</code>, <code>W-003</code>, ..., resetting each day at midnight (UTC/local).</li>
+<li>Computed atomically by counting the current calendar day's registered walk-ins (<code>WalkInVisitRepository.countByVisitDate(today) + 1</code>).</li>
+<li><strong>Lifecycle States</strong>:</li>
+<li><code>WAITING</code> &rarr; Initial state upon front-desk check-in.</li>
+<li><code>CALLED</code> &rarr; Attending nurse or physician calls patient into consultation room.</li>
+<li><code>IN_CONSULTATION</code> &rarr; Active clinical encounter.</li>
+<li><code>COMPLETED</code> &rarr; Consultation concluded.</li>
+<li><code>CANCELLED</code> &rarr; Patient left before being called.</li>
+<li><strong>Edge Cases</strong>:</li>
+<li>Cancelling or deleting a walk-in record must not retroactively renumber existing tokens.</li>
+</ul>
+
+<h3>3.3 Emergency Bay Clinical Triage</h3>
+<ul>
+<li><strong>Acuity Classification</strong>:</li>
+<li><code>CRITICAL</code>: Immediate life threat (cardiac arrest, severe trauma, respiratory failure). Requires resuscitation.</li>
+<li><code>HIGH</code>: Emergent conditions (< 15-minute intervention target).</li>
+<li><code>MEDIUM</code>: Urgent conditions (< 30-minute intervention target).</li>
+<li><code>LOW</code>: Non-urgent emergency bay arrivals.</li>
+<li><strong>Queue Priority Sorting</strong>:</li>
+<li>The active emergency queue (<code>GET /api/emergency/active</code>) must strictly sort patients with <code>CRITICAL</code> priority first, followed by <code>HIGH</code>, <code>MEDIUM</code>, and <code>LOW</code>, sub-ordered by <code>arrivalTime ASC</code>.</li>
+<li><strong>Status Lifecycle</strong>:</li>
+<li><code>REGISTERED</code> &rarr; <code>TRIAGE</code> &rarr; <code>UNDER_TREATMENT</code> &rarr; <code>ADMITTED</code> (transfers to inpatient bed) or <code>DISCHARGED</code>.</li>
+</ul>
+
+<h3>3.4 Doctor Appointment Scheduling & Collision Prevention</h3>
+<ul>
+<li><strong>Double-Booking Invariant</strong>:</li>
+<li>When booking an appointment (<code>POST /api/appointments</code>), the system must verify:</li>
+<pre><code class="language-sql">    SELECT COUNT(*) FROM appointments 
+    WHERE doctor_id = :doctorId 
+      AND appointment_date = :date 
+      AND appointment_time = :time 
+      AND status NOT IN ('CANCELLED', 'REJECTED')</code></pre>
+<li>If a record exists, the transaction must fail immediately with <code>DoubleBookingException</code> (HTTP 409 Conflict).</li>
+<li><strong>Patient Self-Booking</strong>:</li>
+<li>Authenticated patients can only create appointments for themselves.</li>
+<li>Administrators can schedule on behalf of any patient.</li>
+</ul>
+
+<h3>3.5 Pharmacy Inventory & Medication Dispensing</h3>
+<ul>
+<li><strong>Dispensing Invariants</strong>:</li>
+<li><strong>Expiry Check</strong>: For each item in a sale request, if <code>medicine.expiryDate.isBefore(LocalDate.now())</code>, reject the entire transaction with <code>ExpiredMedicineException</code> (HTTP 400 Bad Request).</li>
+<li><strong>Stock Check</strong>: If <code>medicine.quantity < requestedQuantity</code>, reject the transaction with <code>InsufficientStockException</code> (HTTP 400 Bad Request).</li>
+<li><strong>Atomic Stock Deduction</strong>:</li>
+<li>Inside a <code>@Transactional</code> boundary, decrement <code>medicine.quantity</code> by the sold quantity.</li>
+<li>Auto-calculate subtotal, tax (e.g. 5%), discount, and net total.</li>
+<li><strong>Inventory Monitoring</strong>:</li>
+<li>Trigger warning alerts when <code>medicine.quantity <= medicine.minimumStockLevel</code>.</li>
+</ul>
+
+<h3>3.6 Inpatient Ward & Bed Allocation</h3>
+<ul>
+<li><strong>Bed Locking</strong>:</li>
+<li>When admitting a patient (<code>POST /api/admissions</code>), target bed must have status <code>AVAILABLE</code>.</li>
+<li>If target bed status is <code>OCCUPIED</code>, <code>RESERVED</code>, or <code>MAINTENANCE</code>, reject with <code>BedUnavailableException</code> (HTTP 400).</li>
+<li>Atomically update bed status to <code>OCCUPIED</code>.</li>
+<li><strong>Bed Release</strong>:</li>
+<li>When patient is discharged (<code>PUT /api/admissions/{id}/discharge</code>), set admission status to <code>DISCHARGED</code>, stamp <code>dischargeDate</code>, and transition bed status back to <code>AVAILABLE</code>.</li>
+</ul>
+
+<h3>3.7 Invoicing & Settlement</h3>
+<ul>
+<li><strong>Aggregation</strong>:</li>
+<li>Invoices calculate total line items across Consultation Fees, Bed/Room Charges, Dispensed Medications, and Diagnostic Procedures.</li>
+<li>Subtotal, discounts, applicable taxes, and final payable balance must use <code>BigDecimal</code> for zero rounding errors.</li>
+<li><strong>Payments</strong>:</li>
+<li>Recorded against invoice ID with payment method (<code>CASH</code>, <code>CARD</code>, <code>UPI</code>, <code>INSURANCE</code>) and reference ID.</li>
+</ul>
+
+<hr class="divider" />
+
+<h2>4. Data Structures</h2>
+
+<p>The system data domain is modeled in Java persistence entities (<code>jakarta.persistence</code>) mapped to relational database schemas. Below are the corresponding structural definitions (represented in TypeScript interface notation for client-side API consumption).</p>
+
+<pre><code class="language-typescript">// Core Identity &amp; User
+export enum Role {
+  ADMIN = "ADMIN",
+  DOCTOR = "DOCTOR",
+  PATIENT = "PATIENT"
+}
+
+export interface User {
+  id: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  role: Role;
+  aadhar?: string;
+  gender?: string;
+  dateOfBirth?: string; // YYYY-MM-DD
+  createdAt: string;    // ISO-8601
+  updatedAt: string;
+}
+
+// Patient Record
+export interface Patient {
+  id: number;
+  patientId: string; // e.g. PAT-2026-00001
+  userId?: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  dateOfBirth: string;
+  gender: string;
+  bloodGroup: string;
+  emergencyContact: string;
+  address?: string;
+  allergies?: string;
+  medicalHistory?: string;
+  createdAt: string;
+}
+
+// Doctor &amp; Provider
+export enum DoctorStatus {
+  AVAILABLE = "AVAILABLE",
+  BUSY = "BUSY",
+  ON_LEAVE = "ON_LEAVE",
+  INACTIVE = "INACTIVE"
+}
+
+export interface Doctor {
+  id: number;
+  userId?: number;
+  doctorId: string; // e.g. DOC-2026-0001
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  department: string;
+  departmentId?: number;
+  qualification: string;
+  medicalLicense: string;
+  experienceYears: number;
+  consultationFee: number;
+  status: DoctorStatus;
+}
+
+// Walk-In Outpatient
+export enum WalkInStatus {
+  WAITING = "WAITING",
+  CALLED = "CALLED",
+  IN_CONSULTATION = "IN_CONSULTATION",
+  COMPLETED = "COMPLETED",
+  CANCELLED = "CANCELLED"
+}
+
+export interface WalkInVisit {
+  id: number;
+  tokenNumber: string; // e.g. W-001
+  patientId: number;
+  patientName?: string;
+  departmentId: number;
+  departmentName?: string;
+  doctorId?: number;
+  doctorName?: string;
+  visitReason: string;
+  priority: "LOW" | "MEDIUM" | "HIGH";
+  status: WalkInStatus;
+  arrivalTime: string;
+  consultationStartTime?: string;
+  consultationEndTime?: string;
+}
+
+// Emergency Bay
+export enum EmergencyPriority {
+  CRITICAL = "CRITICAL",
+  HIGH = "HIGH",
+  MEDIUM = "MEDIUM",
+  LOW = "LOW"
+}
+
+export enum EmergencyStatus {
+  REGISTERED = "REGISTERED",
+  TRIAGE = "TRIAGE",
+  UNDER_TREATMENT = "UNDER_TREATMENT",
+  ADMITTED = "ADMITTED",
+  DISCHARGED = "DISCHARGED"
+}
+
+export interface EmergencyCase {
+  id: number;
+  patientId: number;
+  chiefComplaint: string;
+  emergencyCondition: string;
+  priority: EmergencyPriority;
+  status: EmergencyStatus;
+  assignedDoctorId?: number;
+  departmentId?: number;
+  bloodPressure?: string;
+  heartRate?: number;
+  oxygenSaturation?: number;
+  temperature?: number;
+  respiratoryRate?: number;
+  treatmentNotes?: string;
+  arrivalTime: string;
+}
+
+// Appointments
+export enum AppointmentStatus {
+  PENDING = "PENDING",
+  CONFIRMED = "CONFIRMED",
+  CHECKED_IN = "CHECKED_IN",
+  IN_CONSULTATION = "IN_CONSULTATION",
+  COMPLETED = "COMPLETED",
+  CANCELLED = "CANCELLED"
+}
+
+export interface Appointment {
+  id: number;
+  patientId: number;
+  doctorId: number;
+  departmentId?: number;
+  appointmentDate: string; // YYYY-MM-DD
+  appointmentTime: string; // HH:mm:ss
+  reason: string;
+  status: AppointmentStatus;
+  notes?: string;
+}
+
+// Pharmacy &amp; Inventory
+export interface Medicine {
+  id: number;
+  medicineName: string;
+  category: string;
+  manufacturer: string;
+  batchNumber: string;
+  expiryDate: string; // YYYY-MM-DD
+  purchasePrice: number;
+  sellingPrice: number;
+  quantity: number;
+  minimumStockLevel: number;
+  prescriptionRequired: boolean;
+}
+
+export interface PharmacySaleItem {
+  id?: number;
+  medicineId: number;
+  medicineName?: string;
+  quantity: number;
+  unitPrice: number;
+  totalPrice: number;
+}
+
+export interface PharmacySale {
+  id: number;
+  patientId?: number;
+  prescriptionId?: number;
+  subtotal: number;
+  tax: number;
+  discount: number;
+  totalAmount: number;
+  paymentMethod: "CASH" | "CARD" | "UPI" | "INSURANCE";
+  saleDate: string;
+  items: PharmacySaleItem[];
+}
+
+// Wards &amp; Beds
+export enum BedStatus {
+  AVAILABLE = "AVAILABLE",
+  OCCUPIED = "OCCUPIED",
+  RESERVED = "RESERVED",
+  MAINTENANCE = "MAINTENANCE"
+}
+
+export interface Bed {
+  id: number;
+  wardId: number;
+  bedNumber: string;
+  status: BedStatus;
+}
+
+export interface Ward {
+  id: number;
+  name: string;
+  wardType: "GENERAL" | "ICU" | "EMERGENCY" | "PRIVATE";
+  floorNumber: number;
+  totalBeds: number;
+}
+
+// Inpatient Admission
+export enum AdmissionStatus {
+  ADMITTED = "ADMITTED",
+  UNDER_TREATMENT = "UNDER_TREATMENT",
+  READY_FOR_DISCHARGE = "READY_FOR_DISCHARGE",
+  DISCHARGED = "DISCHARGED"
+}
+
+export interface Admission {
+  id: number;
+  patientId: number;
+  doctorId: number;
+  departmentId: number;
+  wardId: number;
+  bedId: number;
+  admissionDate: string;
+  dischargeDate?: string;
+  reason: string;
+  diagnosis?: string;
+  status: AdmissionStatus;
+}</code></pre>
+
+<hr class="divider" />
+
+<h2>5. API Interfaces</h2>
+
+<p>The system is configured with base path <code>/</code> and server port <code>8085</code>. Protected endpoints require HTTP Header <code>Authorization: Bearer <token></code>.</p>
+
+<h3>5.1 Authentication API (<code>/api/auth/**</code>)</h3>
+<table class="table">
+<thead><tr>
+<th>Endpoint</th>
+<th>Method</th>
+<th>Role</th>
+<th>Request Body</th>
+<th>Response Body</th>
+</tr></thead><tbody>
+<tr>
+<td><code>/api/auth/register</code></td>
+<td><span class="badge badge-POST">POST</span></td>
+<td>Public</td>
+<td><code>RegisterRequest</code></td>
+<td><code>201 Created</code> (<code>AuthResponse</code>)</td>
+</tr>
+<tr>
+<td><code>/api/auth/login</code></td>
+<td><span class="badge badge-POST">POST</span></td>
+<td>Public</td>
+<td><code>LoginRequest</code></td>
+<td><code>200 OK</code> (<code>AuthResponse</code>)</td>
+</tr>
+<tr>
+<td><code>/api/auth/me</code></td>
+<td><span class="badge badge-GET">GET</span></td>
+<td>Authenticated</td>
+<td>None</td>
+<td><code>200 OK</code> (<code>UserResponse</code>)</td>
+</tr>
+</tbody></table>
+
+<p>#### Usage Example: User Authentication</p>
+<pre><code class="language-http">POST /api/auth/login HTTP/1.1
+Host: localhost:8085
+Content-Type: application/json
+
+{
+  "email": "admin@hms.com",
+  "password": "Admin@123"
+}</code></pre>
+<p><strong>Response (200 OK):</strong></p>
+<pre><code class="language-json">{
+  "success": true,
+  "message": "User Login Successfully",
+  "token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBobXMuY29tIiwiZXhwIjoxNzk...",
+  "user": {
+    "id": 1,
+    "firstName": "System",
+    "lastName": "Admin",
+    "email": "admin@hms.com",
+    "role": "ADMIN"
+  }
+}</code></pre>
+
+<h3>5.2 Patient API (<code>/api/patients/**</code>)</h3>
+<table class="table">
+<thead><tr>
+<th>Endpoint</th>
+<th>Method</th>
+<th>Role</th>
+<th>Description</th>
+</tr></thead><tbody>
+<tr>
+<td><code>/api/patients</code></td>
+<td><span class="badge badge-GET">GET</span></td>
+<td>Admin / Doctor</td>
+<td>List all registered patients</td>
+</tr>
+<tr>
+<td><code>/api/patients/{id}</code></td>
+<td><span class="badge badge-GET">GET</span></td>
+<td>Admin / Doctor / Patient (Own)</td>
+<td>Retrieve patient details by ID</td>
+</tr>
+<tr>
+<td><code>/api/patients</code></td>
+<td><span class="badge badge-POST">POST</span></td>
+<td>Admin</td>
+<td>Create patient record manually</td>
+</tr>
+<tr>
+<td><code>/api/patients/{id}</code></td>
+<td><span class="badge badge-PUT">PUT</span></td>
+<td>Admin</td>
+<td>Update patient medical record</td>
+</tr>
+<tr>
+<td><code>/api/patients/{id}/medical-history</code></td>
+<td><span class="badge badge-GET">GET</span></td>
+<td>Admin / Doctor / Patient (Own)</td>
+<td>Unified patient timeline summary</td>
+</tr>
+</tbody></table>
+
+<h3>5.3 Walk-In Queue API (<code>/api/walk-ins/**</code>)</h3>
+<table class="table">
+<thead><tr>
+<th>Endpoint</th>
+<th>Method</th>
+<th>Role</th>
+<th>Description</th>
+</tr></thead><tbody>
+<tr>
+<td><code>/api/walk-ins</code></td>
+<td><span class="badge badge-POST">POST</span></td>
+<td>Patient / Admin</td>
+<td>Register walk-in arrival; returns token <code>W-001</code></td>
+</tr>
+<tr>
+<td><code>/api/walk-ins/today</code></td>
+<td><span class="badge badge-GET">GET</span></td>
+<td>Admin / Doctor</td>
+<td>List all walk-in visits for today</td>
+</tr>
+<tr>
+<td><code>/api/walk-ins/department/{deptId}/queue</code></td>
+<td><span class="badge badge-GET">GET</span></td>
+<td>Admin / Doctor</td>
+<td>Active queue filtered by department</td>
+</tr>
+<tr>
+<td><code>/api/walk-ins/{id}/status</code></td>
+<td><span class="badge badge-PUT">PUT</span></td>
+<td>Admin / Doctor</td>
+<td>Update visit state (<code>WAITING</code> &rarr; <code>CALLED</code> &rarr; <code>COMPLETED</code>)</td>
+</tr>
+</tbody></table>
+
+<h3>5.4 Emergency Department API (<code>/api/emergency/**</code>)</h3>
+<table class="table">
+<thead><tr>
+<th>Endpoint</th>
+<th>Method</th>
+<th>Role</th>
+<th>Description</th>
+</tr></thead><tbody>
+<tr>
+<td><code>/api/emergency</code></td>
+<td><span class="badge badge-POST">POST</span></td>
+<td>Admin / Doctor</td>
+<td>Register emergency patient with vital signs</td>
+</tr>
+<tr>
+<td><code>/api/emergency/active</code></td>
+<td><span class="badge badge-GET">GET</span></td>
+<td>Admin / Doctor</td>
+<td>Active emergency queue sorted: <code>CRITICAL</code> first</td>
+</tr>
+<tr>
+<td><code>/api/emergency/{id}/triage</code></td>
+<td><span class="badge badge-PUT">PUT</span></td>
+<td>Doctor</td>
+<td>Adjust clinical triage priority level</td>
+</tr>
+<tr>
+<td><code>/api/emergency/{id}/status</code></td>
+<td><span class="badge badge-PUT">PUT</span></td>
+<td>Doctor</td>
+<td>Progress status (<code>TRIAGE</code>, <code>ADMITTED</code>, <code>DISCHARGED</code>)</td>
+</tr>
+</tbody></table>
+
+<h3>5.5 Appointments API (<code>/api/appointments/**</code>)</h3>
+<table class="table">
+<thead><tr>
+<th>Endpoint</th>
+<th>Method</th>
+<th>Role</th>
+<th>Description</th>
+</tr></thead><tbody>
+<tr>
+<td><code>/api/appointments</code></td>
+<td><span class="badge badge-POST">POST</span></td>
+<td>Patient / Admin</td>
+<td>Book appointment (intercepts double-booking)</td>
+</tr>
+<tr>
+<td><code>/api/appointments/doctor/{doctorId}</code></td>
+<td><span class="badge badge-GET">GET</span></td>
+<td>Doctor / Admin</td>
+<td>Retrieve doctor appointment schedule</td>
+</tr>
+<tr>
+<td><code>/api/appointments/patient/{patientId}</code></td>
+<td><span class="badge badge-GET">GET</span></td>
+<td>Patient / Admin</td>
+<td>Retrieve patient scheduled appointments</td>
+</tr>
+<tr>
+<td><code>/api/appointments/{id}/status</code></td>
+<td><span class="badge badge-PUT">PUT</span></td>
+<td>Doctor / Admin</td>
+<td>Confirm, check in, or complete appointment</td>
+</tr>
+<tr>
+<td><code>/api/appointments/{id}</code></td>
+<td><span class="badge badge-DELETE">DELETE</span></td>
+<td>Patient / Admin</td>
+<td>Cancel appointment</td>
+</tr>
+</tbody></table>
+
+<h3>5.6 Pharmacy & Inventory API (<code>/api/inventory/<strong></code> & <code>/api/pharmacy/</strong></code>)</h3>
+<table class="table">
+<thead><tr>
+<th>Endpoint</th>
+<th>Method</th>
+<th>Role</th>
+<th>Description</th>
+</tr></thead><tbody>
+<tr>
+<td><code>/api/inventory</code></td>
+<td><span class="badge badge-GET">GET</span></td>
+<td>Admin / Doctor</td>
+<td>Full inventory catalog with batch numbers</td>
+</tr>
+<tr>
+<td><code>/api/inventory</code></td>
+<td><span class="badge badge-POST">POST</span></td>
+<td>Admin</td>
+<td>Add new medicine batch with expiry and price</td>
+</tr>
+<tr>
+<td><code>/api/inventory/low-stock</code></td>
+<td><span class="badge badge-GET">GET</span></td>
+<td>Admin</td>
+<td>Medicines with stock &le; minimumStockLevel</td>
+</tr>
+<tr>
+<td><code>/api/inventory/expired</code></td>
+<td><span class="badge badge-GET">GET</span></td>
+<td>Admin</td>
+<td>Expired medicine inventory</td>
+</tr>
+<tr>
+<td><code>/api/pharmacy/sales</code></td>
+<td><span class="badge badge-POST">POST</span></td>
+<td>Admin</td>
+<td>Dispense medication; validates expiry and stock</td>
+</tr>
+</tbody></table>
+
+<h3>5.7 Inpatient Beds & Admissions API (<code>/api/beds/<strong></code> & <code>/api/admissions/</strong></code>)</h3>
+<table class="table">
+<thead><tr>
+<th>Endpoint</th>
+<th>Method</th>
+<th>Role</th>
+<th>Description</th>
+</tr></thead><tbody>
+<tr>
+<td><code>/api/wards</code></td>
+<td><span class="badge badge-GET">GET</span></td>
+<td>Admin / Doctor</td>
+<td>Hospital wards (General, ICU, Emergency, Private)</td>
+</tr>
+<tr>
+<td><code>/api/beds/available</code></td>
+<td><span class="badge badge-GET">GET</span></td>
+<td>Admin / Doctor</td>
+<td>Unoccupied beds ready for patient allocation</td>
+</tr>
+<tr>
+<td><code>/api/admissions</code></td>
+<td><span class="badge badge-POST">POST</span></td>
+<td>Doctor / Admin</td>
+<td>Admit patient to bed; locks bed to <code>OCCUPIED</code></td>
+</tr>
+<tr>
+<td><code>/api/admissions/active</code></td>
+<td><span class="badge badge-GET">GET</span></td>
+<td>Admin / Doctor</td>
+<td>Currently admitted inpatient list</td>
+</tr>
+<tr>
+<td><code>/api/admissions/{id}/discharge</code></td>
+<td><span class="badge badge-PUT">PUT</span></td>
+<td>Doctor / Admin</td>
+<td>Discharge patient; releases bed to <code>AVAILABLE</code></td>
+</tr>
+</tbody></table>
+
+<h3>5.8 Invoicing & Billing API (<code>/api/billing/**</code>)</h3>
+<table class="table">
+<thead><tr>
+<th>Endpoint</th>
+<th>Method</th>
+<th>Role</th>
+<th>Description</th>
+</tr></thead><tbody>
+<tr>
+<td><code>/api/billing/invoices</code></td>
+<td><span class="badge badge-POST">POST</span></td>
+<td>Admin</td>
+<td>Create itemized invoice with service charges</td>
+</tr>
+<tr>
+<td><code>/api/billing/invoices/{id}</code></td>
+<td><span class="badge badge-GET">GET</span></td>
+<td>Admin / Patient</td>
+<td>View invoice breakdown and balance</td>
+</tr>
+<tr>
+<td><code>/api/billing/invoices/{id}/payments</code></td>
+<td><span class="badge badge-POST">POST</span></td>
+<td>Admin</td>
+<td>Settle payment (Cash, Card, UPI, Insurance)</td>
+</tr>
+</tbody></table>
+
+<h3>5.9 Dashboard & Reporting API (<code>/api/dashboard/<strong></code> & <code>/api/reports/</strong></code>)</h3>
+<table class="table">
+<thead><tr>
+<th>Endpoint</th>
+<th>Method</th>
+<th>Role</th>
+<th>Description</th>
+</tr></thead><tbody>
+<tr>
+<td><code>/api/dashboard/summary</code></td>
+<td><span class="badge badge-GET">GET</span></td>
+<td>Admin</td>
+<td>High-level metrics: beds, patients, doctors, alerts</td>
+</tr>
+<tr>
+<td><code>/api/reports/revenue</code></td>
+<td><span class="badge badge-GET">GET</span></td>
+<td>Admin</td>
+<td>Revenue aggregates filtered by start/end date</td>
+</tr>
+<tr>
+<td><code>/api/reports/bed-occupancy</code></td>
+<td><span class="badge badge-GET">GET</span></td>
+<td>Admin</td>
+<td>Ward-level bed occupancy percentages</td>
+</tr>
+</tbody></table>
+
+<hr class="divider" />
+
+<h2>6. User Interface (UI) Outline</h2>
+
+<div class="alert alert-note"><strong>Note:</strong>
+<p><strong>Backend-Only Architecture Note</strong>:</p>
+<p>This project operates strictly as a <strong>Headless RESTful API</strong>. All frontend codebases (React/Vite/HTML/CSS) have been removed. The sole developer and operational user interface provided by the application is the <strong>Springdoc OpenAPI / Swagger UI</strong>.</p>
+
+<h3>6.1 Swagger UI Portal (<code>http://localhost:8085/swagger-ui/index.html</code>)</h3>
+<p>The Swagger UI provides an interactive web interface partitioned into <strong>16 Grouped OpenAPI Modules</strong>:</p>
+<ol>
+<li><code>0. All APIs</code> &mdash; Global API catalog.</li>
+<li><code>1. Authentication</code> &mdash; User registration, login, and <code>/me</code> endpoints.</li>
+<li><code>2. Patients</code> &mdash; Patient demographic CRUD and timeline aggregation.</li>
+<li><code>3. Doctors</code> &mdash; Provider profiles, specialization, and availability toggles.</li>
+<li><code>4. Departments</code> &mdash; Clinical departments.</li>
+<li><code>5. Walk-In Outpatient</code> &mdash; Token issuing (<code>W-001</code>) and queue management.</li>
+<li><code>6. Emergency Bay</code> &mdash; Clinical triage sorting and vital monitoring.</li>
+<li><code>7. Appointments</code> &mdash; Slot scheduling with double-booking rejection.</li>
+<li><code>8. Consultations</code> &mdash; Physician diagnostic recording.</li>
+<li><code>9. Prescriptions</code> &mdash; Medication regimens.</li>
+<li><code>10. Pharmacy & Inventory</code> &mdash; Stock levels, expiry alerts, and POS dispensing.</li>
+<li><code>11. Inpatient Beds</code> &mdash; Ward and bed statuses (<code>AVAILABLE</code>, <code>OCCUPIED</code>).</li>
+<li><code>12. Inpatient Admissions</code> &mdash; Patient admission and discharge workflows.</li>
+<li><code>13. Billing & Invoicing</code> &mdash; Invoices and payment collection.</li>
+<li><code>14. Department Messaging</code> &mdash; Inquiries and read-state management.</li>
+<li><code>15. Executive Dashboard & Reports</code> &mdash; Analytics and KPI metrics.</li>
+</ol>
+
+<h3>6.2 UI Consumer Interface Guidelines (For Frontend Developers)</h3>
+<p>Developers implementing web or mobile frontends against this API should structure screens as follows:</p>
+<ul>
+<li><strong>Admin Dashboard</strong>: Top summary metric cards (Available Beds, Today's Appointments, Low Stock Alerts, Emergency Count) pulling from <code>GET /api/dashboard/summary</code>.</li>
+<li><strong>Triage Nurse Console</strong>: Real-time table pulling from <code>GET /api/emergency/active</code>, displaying color-coded badges for <code>CRITICAL</code> (Red), <code>HIGH</code> (Orange), <code>MEDIUM</code> (Yellow), and <code>LOW</code> (Green).</li>
+<li><strong>Outpatient Reception Kiosk</strong>: Simple form invoking <code>POST /api/walk-ins</code>, printing or displaying the generated <code>tokenNumber</code> (e.g. <code>W-001</code>).</li>
+<li><strong>Doctor Consultation Workspace</strong>: Side-by-side view with patient timeline from <code>GET /api/patients/{id}/medical-history</code>, appointment details, and diagnosis/prescription submission forms.</li>
+</ul>
+
+<hr class="divider" />
+
+<h2>7. Non-Functional Requirements</h2>
+
+<h3>7.1 Performance & Concurrency</h3>
+<ul>
+<li><strong>Non-Blocking Throughput</strong>: Configured with embedded Apache Tomcat thread pool supporting concurrent clinical requests.</li>
+<li><strong>Connection Pooling</strong>: HikariCP connection pool configured for rapid database checkout and automatic statement reuse.</li>
+<li><strong>Atomic Operations</strong>: Walk-in token sequences and bed occupancy checks execute in isolated <code>@Transactional</code> blocks to prevent race conditions during high patient arrival volume.</li>
+</ul>
+
+<h3>7.2 Security & Compliance</h3>
+<ul>
+<li><strong>Stateless Authentication</strong>: Zero server-side session state; all requests authenticated via cryptographic JWT signatures.</li>
+<li><strong>Cryptographic Hashing</strong>: User passwords hashed with standard BCrypt work factor (cost 10).</li>
+<li><strong>CORS Configuration</strong>: Allowed origins, headers, and methods configurable in <code>SecurityConfig.java</code> to prevent cross-site request forgery when consumed by web applications.</li>
+<li><strong>Least-Privilege RBAC</strong>: Method-level and URL-level security using Spring Security annotations (<code>@PreAuthorize</code>, <code>requestMatchers</code>).</li>
+</ul>
+
+<h3>7.3 Reliability & Availability</h3>
+<ul>
+<li><strong>Actuator Health Monitoring</strong>: Health endpoint exposed at <code>http://localhost:8085/actuator/health</code> returns <code>{"status": "UP"}</code> for uptime probes and load balancers.</li>
+<li><strong>Dual Persistence Profiles</strong>:</li>
+<li><code>mysql</code>: Production profile utilizing MySQL 8.x with connection retries.</li>
+<li><code>h2</code>: Dev/testing profile providing in-memory database with MySQL syntax compatibility mode (<code>MODE=MySQL</code>).</li>
+</ul>
+
+<h3>7.4 Maintainability & Clean Code</h3>
+<ul>
+<li><strong>Layered Architecture</strong>: Strict separation of concerns across Controller, Service, Repository, Entity, and DTO layers.</li>
+<li><strong>Lombok Integration</strong>: Reduces boilerplate for getters, setters, builders, and constructors.</li>
+<li><strong>Centralized Exception Handling</strong>: <code>GlobalExceptionHandler</code> intercepts domain exceptions (<code>DoubleBookingException</code>, <code>ExpiredMedicineException</code>, <code>BedUnavailableException</code>, <code>ResourceNotFoundException</code>) and returns standardized <code>ApiResponse</code> objects with appropriate HTTP error codes.</li>
+</ul>
+
+<hr class="divider" />
+
+<h2>8. Assumptions and Uncertainties</h2>
+
+<h3>8.1 Assumptions</h3>
+<ol>
+<li><strong>Currency</strong>: All monetary fields (<code>consultationFee</code>, <code>purchasePrice</code>, <code>sellingPrice</code>, <code>totalAmount</code>) are assumed to be in standard decimal currency units (e.g., USD or INR) represented with <code>BigDecimal</code> with 2 decimal precision.</li>
+<li><strong>Timezone</strong>: Date and time values are calculated based on server system clock (<code>LocalDate.now()</code>, <code>LocalDateTime.now()</code>). In distributed multi-region deployments, UTC standardization is assumed.</li>
+<li><strong>Daily Token Reset</strong>: The walk-in daily token sequence assumes the date of arrival determines the sequence index (<code>countByVisitDate(today) + 1</code>).</li>
+</ol>
+
+<h3>8.2 Uncertainties & Items Flagged for Review</h3>
+<ul>
+<li><strong>Automatic Insurance Claims Integration</strong>: The payment model supports <code>PaymentMethod.INSURANCE</code> and records a transaction reference, but third-party clearinghouse EDI claim filing (HL7/FHIR) is not currently implemented in code.</li>
+<li><strong>SMS / Email Gateway</strong>: The messaging and appointment notification workflows store records in the database, but external SMS/Email dispatching adapters (e.g., Twilio, SendGrid) are stubs or absent in the existing source tree.</li>
+<li><strong>Doctor Shift Scheduling</strong>: Doctor availability is managed via a manual status flag (<code>AVAILABLE</code>, <code>BUSY</code>, <code>ON_LEAVE</code>, <code>INACTIVE</code>) rather than an automated recurrent weekly shift roster calendar.</li>
+</ul>
+
+</body>
+</html>
